@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roulette Tycoon</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1c2230;
+      --muted: #5b6477;
+      --primary: #1f6feb;
+      --primary-hover: #175bc2;
+      --danger: #d64545;
+      --success: #1f8f57;
+      --border: #dbe1ec;
+      --shadow: 0 10px 24px rgba(22, 29, 45, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: radial-gradient(circle at top, #ffffff, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    h1, h2, h3 { margin: 0 0 10px; }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .stat {
+      background: #f8faff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .stat .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .stat .value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover:enabled { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: #eef3ff;
+      color: #1f3d75;
+      border-color: #ccd8f3;
+    }
+
+    .btn-danger {
+      background: #ffefef;
+      color: #7f2222;
+      border-color: #f1c6c6;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .range-wrap {
+      display: grid;
+      gap: 6px;
+      background: #f8faff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .log {
+      height: 250px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      background: #fcfdff;
+      display: grid;
+      gap: 6px;
+      align-content: start;
+    }
+
+    .entry {
+      font-size: 14px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: #f3f6fd;
+    }
+
+    .entry.good { border-left: 4px solid var(--success); }
+    .entry.bad { border-left: 4px solid var(--danger); }
+    .entry.warn { border-left: 4px solid #d7a10a; }
+
+    .shop-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .shop-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      background: #fcfdff;
+    }
+
+    .shop-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #edf4ff;
+      color: #20437a;
+      border: 1px solid #c9ddff;
+    }
+
+    .win-banner {
+      border: 2px solid #9fd5b6;
+      background: #effcf4;
+      color: #194f33;
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 700;
+      display: none;
+    }
+
+    .win-banner.show { display: block; }
+
+    .small { font-size: 12px; color: var(--muted); }
+<<<<<<< HEAD
+
+    .table-scene {
+      margin-top: 10px;
+      background: linear-gradient(160deg, #1d6b43, #174f33);
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      position: relative;
+      overflow: hidden;
+      min-height: 190px;
+    }
+
+    .roulette-wrap {
+      display: grid;
+      place-items: center;
+      height: 132px;
+    }
+
+    .roulette-wheel {
+      width: 126px;
+      height: 126px;
+      border-radius: 50%;
+      border: 6px solid #f4df8f;
+      background:
+        conic-gradient(
+          #be2d2d 0deg 30deg, #111 30deg 60deg, #be2d2d 60deg 90deg, #111 90deg 120deg,
+          #be2d2d 120deg 150deg, #111 150deg 180deg, #be2d2d 180deg 210deg, #111 210deg 240deg,
+          #be2d2d 240deg 270deg, #111 270deg 300deg, #be2d2d 300deg 330deg, #111 330deg 360deg
+        );
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28), inset 0 0 0 6px rgba(255, 255, 255, 0.18);
+      position: relative;
+      transform: rotate(0deg);
+      transition: transform 1.4s cubic-bezier(.16,.84,.27,1);
+    }
+
+    .roulette-wheel::after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f4f8ff;
+      border: 2px solid #9eaac5;
+      position: absolute;
+      inset: 0;
+      margin: auto;
+    }
+
+    .wheel-pointer {
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 14px solid #f3f6ff;
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+    }
+
+    .floor {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .customer {
+      width: 24px;
+      height: 40px;
+      border-radius: 12px 12px 8px 8px;
+      position: relative;
+      background: #d4dcee;
+      animation: bob 1.8s ease-in-out infinite;
+      opacity: 0.7;
+      transform-origin: bottom center;
+    }
+
+    .customer::before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #f0c7a8;
+      position: absolute;
+      top: -10px;
+      left: 4px;
+    }
+
+    .customer.vip {
+      background: #ead788;
+      box-shadow: 0 0 0 2px rgba(255, 236, 148, 0.25);
+    }
+
+    .customer.active {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+=======
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Roulette Tycoon</h1>
+      <p class="hint">
+        You own a casino with one roulette table. Press <strong>Play Round</strong> to bring in a customer. You can ask your dealer friend to rig outcomes.
+        Higher rig strength earns more but raises suspicion. If customers notice too much, they leave and profits drop.
+<<<<<<< HEAD
+        Buy upgrades in the shop, attract VIPs, and keep scaling your casino into a luxury empire.
+=======
+        Buy upgrades in the shop, attract VIPs, and finally buy the yacht to win.
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+      </p>
+      <div class="row">
+        <button id="restartBtn" class="btn-secondary">Restart Run</button>
+      </div>
+    </div>
+
+    <div class="card topbar">
+      <div class="stat"><div class="label">Cash</div><div class="value" id="cashStat">$0</div></div>
+      <div class="stat"><div class="label">Suspicion</div><div class="value" id="suspicionStat">0%</div></div>
+      <div class="stat"><div class="label">Customers Left</div><div class="value" id="leftStat">0</div></div>
+      <div class="stat"><div class="label">VIP Level</div><div class="value" id="vipStat">0</div></div>
+    </div>
+
+<<<<<<< HEAD
+    <div id="winBanner" class="win-banner">You built the Casino Empire and can now retire in style.</div>
+=======
+    <div id="winBanner" class="win-banner">You bought the yacht. You win.</div>
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+
+    <div class="layout">
+      <div class="card">
+        <h2>Table Floor</h2>
+<<<<<<< HEAD
+        <div class="table-scene">
+          <div class="wheel-pointer"></div>
+          <div class="roulette-wrap">
+            <div id="rouletteWheel" class="roulette-wheel"></div>
+          </div>
+          <div id="floor" class="floor"></div>
+        </div>
+=======
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+        <div class="controls">
+          <div class="range-wrap">
+            <label for="rigRange"><strong>Rig Strength</strong> (<span id="rigValue">25</span>% chance your rig works)</label>
+            <input id="rigRange" type="range" min="1" max="100" value="25" />
+            <div class="hint">Higher rig strength increases both profit chance and chance of being noticed.</div>
+            <div class="small" id="noticePreview">Notice risk this round: 9%</div>
+          </div>
+          <div class="row">
+            <button id="playBtn" class="btn-primary">Play Round</button>
+          </div>
+        </div>
+
+        <h3 style="margin-top:14px;">Round Log</h3>
+        <div id="log" class="log" aria-live="polite"></div>
+      </div>
+
+      <div class="card">
+        <h2>Shop</h2>
+        <p class="hint">Buy upgrades to improve rigging or bring in bigger spenders. VIPs pay more, but they are sharper and notice tricks faster.</p>
+
+        <div class="shop-list" id="shopList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const formatMoney = (n) => "$" + Math.floor(n).toLocaleString();
+
+    const state = {
+<<<<<<< HEAD
+      cash: 350,
+=======
+      cash: 500,
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+      suspicion: 0,
+      customersLeft: 0,
+      vipLevel: 0,
+      rigBonus: 0,
+      noticePenalty: 0,
+<<<<<<< HEAD
+      yachtOwned: false,
+      empireBuilt: false,
+      rounds: 0,
+      spinAngle: 0,
+      gameOver: false
+    };
+    const SAVE_KEY = "roulette_tycoon_save_v2";
+=======
+      yachtBought: false,
+      rounds: 0,
+      gameOver: false
+    };
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+
+    const shopItems = [
+      {
+        id: "rig1",
+        name: "Better Signal System",
+        desc: "+8% effective rig success.",
+        cost: 1200,
+        kind: "rig",
+        bought: false,
+        apply: () => { state.rigBonus += 8; }
+      },
+      {
+        id: "rig2",
+        name: "Dealer Practice Nights",
+        desc: "+12% effective rig success.",
+        cost: 3200,
+        kind: "rig",
+        bought: false,
+        apply: () => { state.rigBonus += 12; }
+      },
+      {
+        id: "cover1",
+        name: "Subtle Camera Blind Spots",
+        desc: "-8% notice chance.",
+        cost: 2200,
+        kind: "cover",
+        bought: false,
+        apply: () => { state.noticePenalty += 8; }
+      },
+      {
+        id: "vip1",
+        name: "VIP Lounge",
+        desc: "Attract richer customers. Higher payouts and higher scrutiny.",
+        cost: 2600,
+        kind: "vip",
+        bought: false,
+        apply: () => { state.vipLevel += 1; }
+      },
+      {
+        id: "vip2",
+        name: "Private Jet Transfers",
+        desc: "More elite VIPs. Much higher bets, sharper eyes.",
+        cost: 7500,
+        kind: "vip",
+        bought: false,
+        requires: "vip1",
+        apply: () => { state.vipLevel += 1; }
+      },
+      {
+<<<<<<< HEAD
+        id: "cover2",
+        name: "Pit Boss Training",
+        desc: "-12% notice chance.",
+        cost: 6200,
+        kind: "cover",
+        bought: false,
+        requires: "cover1",
+        apply: () => { state.noticePenalty += 12; }
+      },
+      {
+        id: "rig3",
+        name: "Magnetic Ball Timing",
+        desc: "+18% effective rig success.",
+        cost: 9800,
+        kind: "rig",
+        bought: false,
+        requires: "rig2",
+        apply: () => { state.rigBonus += 18; }
+      },
+      {
+        id: "staff1",
+        name: "Dealer Rotation",
+        desc: "Small operational efficiency (+4% round payout).",
+        cost: 8500,
+        kind: "ops",
+        bought: false,
+        apply: () => { state.opsMult = (state.opsMult || 1) + 0.04; }
+      },
+      {
+        id: "vip3",
+        name: "Whale Concierge Team",
+        desc: "Even richer VIP traffic. Stronger scrutiny.",
+        cost: 15500,
+        kind: "vip",
+        bought: false,
+        requires: "vip2",
+        apply: () => { state.vipLevel += 1; }
+      },
+      {
+        id: "yacht",
+        name: "Harbor Yacht",
+        desc: "Brand prestige: +16% round payout.",
+        cost: 25000,
+        kind: "luxury",
+        bought: false,
+        apply: () => {
+          state.yachtOwned = true;
+          state.opsMult = (state.opsMult || 1) + 0.16;
+        }
+      },
+      {
+        id: "empire",
+        name: "Casino Empire Buyout",
+        desc: "True endgame purchase.",
+        cost: 72000,
+        kind: "goal",
+        bought: false,
+        requires: "yacht",
+        apply: () => {
+          state.empireBuilt = true;
+=======
+        id: "yacht",
+        name: "Buy the Yacht",
+        desc: "Win condition. Own this and retire in style.",
+        cost: 25000,
+        kind: "goal",
+        bought: false,
+        apply: () => {
+          state.yachtBought = true;
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+          state.gameOver = true;
+        }
+      }
+    ];
+
+    const els = {
+      cashStat: document.getElementById("cashStat"),
+      suspicionStat: document.getElementById("suspicionStat"),
+      leftStat: document.getElementById("leftStat"),
+      vipStat: document.getElementById("vipStat"),
+      rigRange: document.getElementById("rigRange"),
+      rigValue: document.getElementById("rigValue"),
+      noticePreview: document.getElementById("noticePreview"),
+      playBtn: document.getElementById("playBtn"),
+      log: document.getElementById("log"),
+      shopList: document.getElementById("shopList"),
+      winBanner: document.getElementById("winBanner"),
+<<<<<<< HEAD
+      restartBtn: document.getElementById("restartBtn"),
+      rouletteWheel: document.getElementById("rouletteWheel"),
+      floor: document.getElementById("floor")
+    };
+
+    function saveGame() {
+      try {
+        const payload = {
+          state,
+          rigValue: Number(els.rigRange.value),
+          bought: shopItems.map(item => ({ id: item.id, bought: item.bought }))
+        };
+        localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
+      } catch (_) {}
+    }
+
+    function loadGame() {
+      try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        if (!data || !data.state || !Array.isArray(data.bought)) return false;
+
+        Object.assign(state, data.state);
+        for (const item of shopItems) {
+          const found = data.bought.find(x => x.id === item.id);
+          item.bought = Boolean(found?.bought);
+        }
+
+        const loadedRig = Number(data.rigValue);
+        if (Number.isFinite(loadedRig)) els.rigRange.value = String(Math.max(1, Math.min(100, loadedRig)));
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+=======
+      restartBtn: document.getElementById("restartBtn")
+    };
+
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+    function addLog(text, type = "") {
+      const entry = document.createElement("div");
+      entry.className = `entry ${type}`.trim();
+      entry.textContent = text;
+      els.log.prepend(entry);
+    }
+
+    function getNoticeRisk(rigValue) {
+      const base = 4 + rigValue * 0.22 + state.vipLevel * 6 + Math.max(0, state.suspicion * 0.08);
+      return Math.max(1, Math.min(95, Math.round(base - state.noticePenalty)));
+    }
+
+    function updateHUD() {
+      els.cashStat.textContent = formatMoney(state.cash);
+      els.suspicionStat.textContent = `${Math.round(state.suspicion)}%`;
+      els.leftStat.textContent = String(state.customersLeft);
+      els.vipStat.textContent = String(state.vipLevel);
+
+      const rv = Number(els.rigRange.value);
+      els.rigValue.textContent = String(rv);
+      els.noticePreview.textContent = `Notice risk this round: ${getNoticeRisk(rv)}%`;
+
+      els.playBtn.disabled = state.gameOver;
+<<<<<<< HEAD
+      els.winBanner.classList.toggle("show", state.empireBuilt);
+      renderShop();
+      renderFloor();
+      saveGame();
+    }
+
+    function renderFloor() {
+      els.floor.innerHTML = "";
+      const regularCount = Math.min(6, 3 + Math.floor(state.rounds / 5));
+      const vipCount = Math.min(4, state.vipLevel);
+      const total = regularCount + vipCount;
+      for (let i = 0; i < total; i++) {
+        const customer = document.createElement("div");
+        customer.className = "customer";
+        if (i >= regularCount) customer.classList.add("vip");
+        if (i === 0) customer.classList.add("active");
+        customer.style.animationDelay = `${i * 0.12}s`;
+        els.floor.appendChild(customer);
+      }
+    }
+
+    function spinWheel() {
+      const delta = 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
+      state.spinAngle += delta;
+      els.rouletteWheel.style.transform = `rotate(${state.spinAngle}deg)`;
+=======
+      els.winBanner.classList.toggle("show", state.yachtBought);
+      renderShop();
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+    }
+
+    function canBuy(item) {
+      if (item.bought) return false;
+      if (item.requires && !shopItems.find(x => x.id === item.requires)?.bought) return false;
+      return state.cash >= item.cost;
+    }
+
+    function renderShop() {
+      els.shopList.innerHTML = "";
+
+      for (const item of shopItems) {
+        const box = document.createElement("div");
+        box.className = "shop-item";
+
+        const head = document.createElement("div");
+        head.className = "shop-head";
+
+        const name = document.createElement("strong");
+        name.textContent = item.name;
+
+        const cost = document.createElement("span");
+        cost.className = "pill";
+        cost.textContent = formatMoney(item.cost);
+
+        head.appendChild(name);
+        head.appendChild(cost);
+
+        const desc = document.createElement("div");
+        desc.className = "hint";
+        desc.textContent = item.desc;
+
+        const btn = document.createElement("button");
+        const lockedByReq = item.requires && !shopItems.find(x => x.id === item.requires)?.bought;
+
+        if (item.bought) {
+          btn.textContent = "Owned";
+          btn.disabled = true;
+          btn.className = "btn-secondary";
+        } else if (lockedByReq) {
+<<<<<<< HEAD
+          btn.textContent = "Locked (needs prior upgrade)";
+=======
+          btn.textContent = "Locked (needs prior VIP)";
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+          btn.disabled = true;
+          btn.className = "btn-secondary";
+        } else {
+          btn.textContent = "Buy";
+          btn.disabled = !canBuy(item);
+          btn.className = item.kind === "goal" ? "btn-danger" : "btn-secondary";
+        }
+
+        btn.addEventListener("click", () => buyItem(item.id));
+
+        box.appendChild(head);
+        box.appendChild(desc);
+        box.appendChild(btn);
+
+        els.shopList.appendChild(box);
+      }
+    }
+
+    function buyItem(id) {
+      if (state.gameOver) return;
+      const item = shopItems.find(i => i.id === id);
+      if (!item || !canBuy(item)) return;
+
+      state.cash -= item.cost;
+      item.bought = true;
+      item.apply();
+
+      if (item.kind === "goal") {
+<<<<<<< HEAD
+        addLog("You completed the Casino Empire buyout and secured the endgame.", "good");
+=======
+        addLog("You purchased the yacht and retired as the roulette king.", "good");
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+      } else {
+        addLog(`Bought ${item.name}.`, "good");
+      }
+
+      updateHUD();
+    }
+
+    function playRound() {
+      if (state.gameOver) return;
+
+      state.rounds += 1;
+      const rigValue = Number(els.rigRange.value);
+
+<<<<<<< HEAD
+      const customerType = Math.random() < 0.16 + state.vipLevel * 0.17 ? "VIP" : "Regular";
+      const baseBet = customerType === "VIP"
+        ? (260 + Math.random() * 620) * (1 + state.vipLevel * 0.52)
+        : (55 + Math.random() * 145) * (1 + state.vipLevel * 0.3);
+=======
+      const customerType = Math.random() < 0.2 + state.vipLevel * 0.15 ? "VIP" : "Regular";
+      const baseBet = customerType === "VIP"
+        ? (300 + Math.random() * 700) * (1 + state.vipLevel * 0.4)
+        : (70 + Math.random() * 180) * (1 + state.vipLevel * 0.2);
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+
+      const fairHouseEdgeGain = baseBet * 0.05;
+      const effectiveRigChance = Math.min(98, rigValue + state.rigBonus);
+      const rigWorked = Math.random() * 100 < effectiveRigChance;
+<<<<<<< HEAD
+      const opsMult = state.opsMult || 1;
+
+      let profit = fairHouseEdgeGain;
+      if (rigWorked) {
+        profit += baseBet * (0.16 + rigValue / 300);
+      } else {
+        profit -= baseBet * 0.12;
+      }
+      const lateGameEase = 1 + Math.min(0.3, Math.max(0, state.rounds - 25) * 0.008);
+      profit *= opsMult;
+      profit *= lateGameEase;
+=======
+
+      let profit = fairHouseEdgeGain;
+      if (rigWorked) {
+        profit += baseBet * (0.24 + rigValue / 220);
+      } else {
+        profit -= baseBet * 0.12;
+      }
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+
+      state.cash += profit;
+
+      const noticeRisk = getNoticeRisk(rigValue) + (customerType === "VIP" ? 8 : 0);
+      const noticed = Math.random() * 100 < noticeRisk;
+
+      if (noticed) {
+        const suspicionGain = customerType === "VIP" ? 14 : 9;
+        state.suspicion = Math.min(100, state.suspicion + suspicionGain);
+        state.customersLeft += customerType === "VIP" ? 2 : 1;
+        state.cash -= customerType === "VIP" ? 120 : 60;
+        addLog(`${customerType} noticed something suspicious and left angry.`, "bad");
+      } else {
+        state.suspicion = Math.max(0, state.suspicion - 3);
+      }
+
+      if (state.suspicion >= 100) {
+        state.gameOver = true;
+        addLog("Too many customers caught on. Your casino is exposed. Restart to try again.", "warn");
+      }
+
+      const outcomeText = rigWorked ? "Rig worked" : "Rig failed";
+      const resultType = profit >= 0 ? "good" : "bad";
+      addLog(`${customerType} played ${formatMoney(baseBet)}. ${outcomeText}. Round profit: ${formatMoney(profit)}.`, resultType);
+<<<<<<< HEAD
+      spinWheel();
+=======
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+
+      updateHUD();
+    }
+
+    function restartGame() {
+<<<<<<< HEAD
+      state.cash = 350;
+=======
+      state.cash = 500;
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+      state.suspicion = 0;
+      state.customersLeft = 0;
+      state.vipLevel = 0;
+      state.rigBonus = 0;
+      state.noticePenalty = 0;
+<<<<<<< HEAD
+      state.yachtOwned = false;
+      state.empireBuilt = false;
+      state.rounds = 0;
+      state.spinAngle = 0;
+      state.opsMult = 1;
+=======
+      state.yachtBought = false;
+      state.rounds = 0;
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+      state.gameOver = false;
+
+      for (const item of shopItems) item.bought = false;
+
+      els.rigRange.value = "25";
+<<<<<<< HEAD
+      els.rouletteWheel.style.transform = "rotate(0deg)";
+=======
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
+      els.log.innerHTML = "";
+      addLog("New run started. Keep profits up and suspicion down.", "warn");
+      updateHUD();
+    }
+
+    els.playBtn.addEventListener("click", playRound);
+    els.rigRange.addEventListener("input", updateHUD);
+    els.restartBtn.addEventListener("click", restartGame);
+
+<<<<<<< HEAD
+    if (loadGame()) {
+      addLog("Save loaded. Back to the floor.", "good");
+      updateHUD();
+    } else {
+      restartGame();
+    }
+  </script>
+</body>
+</html>
+=======
+    restartGame();
+  </script>
+</body>
+</html>
+>>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
