@@ -216,7 +216,6 @@
     .win-banner.show { display: block; }
 
     .small { font-size: 12px; color: var(--muted); }
-<<<<<<< HEAD
 
     .table-scene {
       margin-top: 10px;
@@ -321,8 +320,6 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-4px); }
     }
-=======
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
   </style>
 </head>
 <body>
@@ -332,11 +329,7 @@
       <p class="hint">
         You own a casino with one roulette table. Press <strong>Play Round</strong> to bring in a customer. You can ask your dealer friend to rig outcomes.
         Higher rig strength earns more but raises suspicion. If customers notice too much, they leave and profits drop.
-<<<<<<< HEAD
         Buy upgrades in the shop, attract VIPs, and keep scaling your casino into a luxury empire.
-=======
-        Buy upgrades in the shop, attract VIPs, and finally buy the yacht to win.
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
       </p>
       <div class="row">
         <button id="restartBtn" class="btn-secondary">Restart Run</button>
@@ -350,16 +343,11 @@
       <div class="stat"><div class="label">VIP Level</div><div class="value" id="vipStat">0</div></div>
     </div>
 
-<<<<<<< HEAD
     <div id="winBanner" class="win-banner">You built the Casino Empire and can now retire in style.</div>
-=======
-    <div id="winBanner" class="win-banner">You bought the yacht. You win.</div>
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
 
     <div class="layout">
       <div class="card">
         <h2>Table Floor</h2>
-<<<<<<< HEAD
         <div class="table-scene">
           <div class="wheel-pointer"></div>
           <div class="roulette-wrap">
@@ -367,8 +355,6 @@
           </div>
           <div id="floor" class="floor"></div>
         </div>
-=======
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
         <div class="controls">
           <div class="range-wrap">
             <label for="rigRange"><strong>Rig Strength</strong> (<span id="rigValue">25</span>% chance your rig works)</label>
@@ -398,17 +384,12 @@
     const formatMoney = (n) => "$" + Math.floor(n).toLocaleString();
 
     const state = {
-<<<<<<< HEAD
       cash: 350,
-=======
-      cash: 500,
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
       suspicion: 0,
       customersLeft: 0,
       vipLevel: 0,
       rigBonus: 0,
       noticePenalty: 0,
-<<<<<<< HEAD
       yachtOwned: false,
       empireBuilt: false,
       rounds: 0,
@@ -416,12 +397,6 @@
       gameOver: false
     };
     const SAVE_KEY = "roulette_tycoon_save_v2";
-=======
-      yachtBought: false,
-      rounds: 0,
-      gameOver: false
-    };
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
 
     const shopItems = [
       {
@@ -471,7 +446,6 @@
         apply: () => { state.vipLevel += 1; }
       },
       {
-<<<<<<< HEAD
         id: "cover2",
         name: "Pit Boss Training",
         desc: "-12% notice chance.",
@@ -532,16 +506,6 @@
         requires: "yacht",
         apply: () => {
           state.empireBuilt = true;
-=======
-        id: "yacht",
-        name: "Buy the Yacht",
-        desc: "Win condition. Own this and retire in style.",
-        cost: 25000,
-        kind: "goal",
-        bought: false,
-        apply: () => {
-          state.yachtBought = true;
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
           state.gameOver = true;
         }
       }
@@ -559,7 +523,6 @@
       log: document.getElementById("log"),
       shopList: document.getElementById("shopList"),
       winBanner: document.getElementById("winBanner"),
-<<<<<<< HEAD
       restartBtn: document.getElementById("restartBtn"),
       rouletteWheel: document.getElementById("rouletteWheel"),
       floor: document.getElementById("floor")
@@ -597,11 +560,6 @@
       }
     }
 
-=======
-      restartBtn: document.getElementById("restartBtn")
-    };
-
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
     function addLog(text, type = "") {
       const entry = document.createElement("div");
       entry.className = `entry ${type}`.trim();
@@ -625,7 +583,6 @@
       els.noticePreview.textContent = `Notice risk this round: ${getNoticeRisk(rv)}%`;
 
       els.playBtn.disabled = state.gameOver;
-<<<<<<< HEAD
       els.winBanner.classList.toggle("show", state.empireBuilt);
       renderShop();
       renderFloor();
@@ -651,10 +608,6 @@
       const delta = 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
       state.spinAngle += delta;
       els.rouletteWheel.style.transform = `rotate(${state.spinAngle}deg)`;
-=======
-      els.winBanner.classList.toggle("show", state.yachtBought);
-      renderShop();
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
     }
 
     function canBuy(item) {
@@ -695,11 +648,7 @@
           btn.disabled = true;
           btn.className = "btn-secondary";
         } else if (lockedByReq) {
-<<<<<<< HEAD
           btn.textContent = "Locked (needs prior upgrade)";
-=======
-          btn.textContent = "Locked (needs prior VIP)";
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
           btn.disabled = true;
           btn.className = "btn-secondary";
         } else {
@@ -728,11 +677,7 @@
       item.apply();
 
       if (item.kind === "goal") {
-<<<<<<< HEAD
         addLog("You completed the Casino Empire buyout and secured the endgame.", "good");
-=======
-        addLog("You purchased the yacht and retired as the roulette king.", "good");
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
       } else {
         addLog(`Bought ${item.name}.`, "good");
       }
@@ -746,22 +691,14 @@
       state.rounds += 1;
       const rigValue = Number(els.rigRange.value);
 
-<<<<<<< HEAD
       const customerType = Math.random() < 0.16 + state.vipLevel * 0.17 ? "VIP" : "Regular";
       const baseBet = customerType === "VIP"
         ? (260 + Math.random() * 620) * (1 + state.vipLevel * 0.52)
         : (55 + Math.random() * 145) * (1 + state.vipLevel * 0.3);
-=======
-      const customerType = Math.random() < 0.2 + state.vipLevel * 0.15 ? "VIP" : "Regular";
-      const baseBet = customerType === "VIP"
-        ? (300 + Math.random() * 700) * (1 + state.vipLevel * 0.4)
-        : (70 + Math.random() * 180) * (1 + state.vipLevel * 0.2);
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
 
       const fairHouseEdgeGain = baseBet * 0.05;
       const effectiveRigChance = Math.min(98, rigValue + state.rigBonus);
       const rigWorked = Math.random() * 100 < effectiveRigChance;
-<<<<<<< HEAD
       const opsMult = state.opsMult || 1;
 
       let profit = fairHouseEdgeGain;
@@ -773,15 +710,6 @@
       const lateGameEase = 1 + Math.min(0.3, Math.max(0, state.rounds - 25) * 0.008);
       profit *= opsMult;
       profit *= lateGameEase;
-=======
-
-      let profit = fairHouseEdgeGain;
-      if (rigWorked) {
-        profit += baseBet * (0.24 + rigValue / 220);
-      } else {
-        profit -= baseBet * 0.12;
-      }
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
 
       state.cash += profit;
 
@@ -806,44 +734,29 @@
       const outcomeText = rigWorked ? "Rig worked" : "Rig failed";
       const resultType = profit >= 0 ? "good" : "bad";
       addLog(`${customerType} played ${formatMoney(baseBet)}. ${outcomeText}. Round profit: ${formatMoney(profit)}.`, resultType);
-<<<<<<< HEAD
       spinWheel();
-=======
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
 
       updateHUD();
     }
 
     function restartGame() {
-<<<<<<< HEAD
       state.cash = 350;
-=======
-      state.cash = 500;
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
       state.suspicion = 0;
       state.customersLeft = 0;
       state.vipLevel = 0;
       state.rigBonus = 0;
       state.noticePenalty = 0;
-<<<<<<< HEAD
       state.yachtOwned = false;
       state.empireBuilt = false;
       state.rounds = 0;
       state.spinAngle = 0;
       state.opsMult = 1;
-=======
-      state.yachtBought = false;
-      state.rounds = 0;
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
       state.gameOver = false;
 
       for (const item of shopItems) item.bought = false;
 
       els.rigRange.value = "25";
-<<<<<<< HEAD
       els.rouletteWheel.style.transform = "rotate(0deg)";
-=======
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
       els.log.innerHTML = "";
       addLog("New run started. Keep profits up and suspicion down.", "warn");
       updateHUD();
@@ -853,7 +766,6 @@
     els.rigRange.addEventListener("input", updateHUD);
     els.restartBtn.addEventListener("click", restartGame);
 
-<<<<<<< HEAD
     if (loadGame()) {
       addLog("Save loaded. Back to the floor.", "good");
       updateHUD();
@@ -863,9 +775,3 @@
   </script>
 </body>
 </html>
-=======
-    restartGame();
-  </script>
-</body>
-</html>
->>>>>>> ac770384d54a0d93eae1931218f7fa66f87a1064
